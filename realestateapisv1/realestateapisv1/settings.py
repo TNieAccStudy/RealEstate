@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'realestate.User'
+
 
 # Application definition
 
@@ -37,9 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'realestate.apps.RealestateConfig',
+    'drf_yasg',
+    'corsheaders',
+    'rest_framework',
+    'oauth2_provider',
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -75,10 +85,19 @@ WSGI_APPLICATION = 'realestateapisv1.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'realestatedb',
+        'USER': 'root',
+        'PASSWORD': 'Admin@123',
+        'HOST': '' # mặc định localhost
     }
 }
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    )
+ }
 
 
 # Password validation
@@ -121,3 +140,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+import cloudinary
+
+cloudinary.config(
+    cloud_name="dumxie12n",
+    api_key="486272471273618",
+    api_secret="La_vSQr8XPvW7Dq5Z8-KaqVaQyg",
+    secure=True
+)
+
+OAUTH2_PROVIDER = {
+    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore',
+
+}
+
+CLIENT_ID = "J3COKWzthRuubyCoUThT2nyQHnSMsggItS0Jgjiz"
+CLIENT_SECRET = "TmrzExhjZ5xZITAqjmAXUCVIwFzGwV4PoZpyxJWktdZoJf5raGLbCuAis56abuK3jbwyHcNz9fpkNhogGWElUURiA7DzQhefZXFVkib6nQCkzfUC6t0BXpsnWCwAYUsu"
